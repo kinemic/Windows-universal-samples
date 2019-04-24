@@ -17,16 +17,14 @@
     <ClCompile Include="..\..\..\SharedContent\cpp\MainPage.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="SampleConfiguration.cpp" />
-    <ClCompile Include="Scenario1_Basic.xaml.cpp" />
-    <ClCompile Include="Scenario2_Launch.xaml.cpp" />
+    <ClCompile Include="Scenario1_Render.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="..\..\..\SharedContent\cpp\App.xaml.h" />
     <ClInclude Include="..\..\..\SharedContent\cpp\MainPage.xaml.h" />
     <ClInclude Include="SampleConfiguration.h" />
-    <ClInclude Include="Scenario1_Basic.xaml.h" />
-    <ClInclude Include="Scenario2_Launch.xaml.h" />
+    <ClInclude Include="Scenario1_Render.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -36,8 +34,7 @@
     <Page Include="..\..\..\SharedContent\xaml\Styles.xaml">
       <Filter>Styles</Filter>
     </Page>
-    <Page Include="..\shared\Scenario1_Basic.xaml" />
-    <Page Include="..\shared\Scenario2_Launch.xaml" />
+    <Page Include="..\shared\Scenario1_Render.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\SharedContent\media\smalltile-sdk.png">
@@ -61,5 +58,8 @@
     <Image Include="..\..\..\SharedContent\media\windows-sdk.png">
       <Filter>Assets</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

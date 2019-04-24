@@ -10,6 +10,7 @@
 //*********************************************************
 #include "pch.h"
 #include "Scenario1_Render.xaml.h"
+#include <string>
 
 using namespace SDKTemplate;
 
@@ -31,6 +32,128 @@ using namespace Windows::UI::Xaml::Media::Imaging;
 Scenario1_Render::Scenario1_Render()
 {
     InitializeComponent();
+
+	engine = Kinemic::Gesture::Engine::Default;
+	engineViewModel = Kinemic::Gesture::Common::EngineViewModel::Create(engine);
+	bandViewModel = Kinemic::Gesture::Common::BandViewModel::Create(engine, "");
+
+	engine->ConnectionStateChanged += ref new TypedEventHandler<Kinemic::Gesture::Engine^, Kinemic::Gesture::ConnectionStateChangedEventArgs^>(this, &Scenario1_Render::Engine_ConnectionStateChanged);
+	engine->AirmouseMoved += ref new TypedEventHandler<Kinemic::Gesture::Engine^, Kinemic::Gesture::AirmouseMovedEventArgs^>(this, &Scenario1_Render::Engine_AirmouseMoved);
+	engine->GestureDetected += ref new TypedEventHandler<Kinemic::Gesture::Engine^, Kinemic::Gesture::GestureDetectedEventArgs^>(this, &Scenario1_Render::Engine_GestureDetected);
+}
+
+void Scenario1_Render::Engine_ConnectionStateChanged(Kinemic::Gesture::Engine^ sender, Kinemic::Gesture::ConnectionStateChangedEventArgs^ e) {
+	bandViewModel->Band = e->Band;
+}
+
+void Scenario1_Render::Engine_AirmouseMoved(Kinemic::Gesture::Engine^ sender, Kinemic::Gesture::AirmouseMovedEventArgs^ e) {
+	if (airmouseState != e->PalmFacing) {
+		lastX = e->X;
+		lastY = e->Y;
+		airmouseState = e->PalmFacing;
+
+		bandViewModel->Vibrate(100);
+
+		switch (airmouseState)
+		{
+		case Kinemic::Gesture::AirMousePalmFacing::PALM_FACING_DOWNWARDS:
+			rootPage->NotifyUser("Panning", NotifyType::StatusMessage);
+			break;
+		case Kinemic::Gesture::AirMousePalmFacing::PALM_FACING_UPWARDS:
+			rootPage->NotifyUser("Zooming", NotifyType::StatusMessage);
+			break;
+		case Kinemic::Gesture::AirMousePalmFacing::PALM_FACING_SIDEWAYS:
+		case Kinemic::Gesture::AirMousePalmFacing::PALM_FACING_INCONCLUSIVE:
+			rootPage->NotifyUser("", NotifyType::StatusMessage);
+			break;
+		}
+	}
+	else {
+		float dx = e->X - lastX;
+		float dy = e->Y - lastY;
+
+		lastX = e->X;
+		lastY = e->Y;
+
+		switch (airmouseState) {
+		case Kinemic::Gesture::AirMousePalmFacing::PALM_FACING_DOWNWARDS:
+			/* Use dx and dy to pan the pdf (by panning the scroll view) */
+			ScrollViewer->ChangeView(ScrollViewer->HorizontalOffset + dx * -1 * PAN_FACTOR, ScrollViewer->VerticalOffset + dy * PAN_FACTOR, nullptr );
+			break;
+		case Kinemic::Gesture::AirMousePalmFacing::PALM_FACING_UPWARDS:
+			/* Use dy to zoom the pdf (by zooming the scroll view) */
+			// TODO: zoom on center by adjusting offsets
+			ScrollViewer->ChangeView(nullptr, nullptr, ScrollViewer->ZoomFactor + (dy * ZOOM_FACTOR));
+			break;
+		case Kinemic::Gesture::AirMousePalmFacing::PALM_FACING_SIDEWAYS:
+			break;
+		case Kinemic::Gesture::AirMousePalmFacing::PALM_FACING_INCONCLUSIVE:
+			break;
+		}
+	}
+}
+
+void Scenario1_Render::Engine_GestureDetected(Kinemic::Gesture::Engine^ sender, Kinemic::Gesture::GestureDetectedEventArgs^ e) {
+	unsigned long pageNumber;
+	switch (e->Gesture) {
+	case Kinemic::Gesture::Gesture::ROTATE_RL:
+		/* KINEMIC: Activate airmouse on Rotate RL gesture */
+		bandViewModel->IsAirmouseActive = true;
+		bandViewModel->Vibrate(300);
+		rootPage->NotifyUser("Airmouse Active", NotifyType::StatusMessage);
+		break;
+	case Kinemic::Gesture::Gesture::ROTATE_LR:
+		/* KINEMIC: Deactivate airmouse on Rotate LR gesture */
+		bandViewModel->IsAirmouseActive = false;
+		bandViewModel->Vibrate(300);
+		rootPage->NotifyUser("", NotifyType::StatusMessage);
+		break;
+	case Kinemic::Gesture::Gesture::CIRCLE_R:
+		break;
+	case Kinemic::Gesture::Gesture::CIRCLE_L:
+		break;
+	case Kinemic::Gesture::Gesture::SWIPE_R:
+		/* KINEMIC: Next page on Swipe R */
+		pageNumber = wcstoul(PageNumberBox->Text->Data(), nullptr, 10);
+		if (pdfDocument != nullptr &&(pageNumber + 1 >= 1) && (pageNumber + 1 <= pdfDocument->PageCount))
+		{
+			PageNumberBox->Text = "" + (pageNumber + 1).ToString();
+			ViewPage();
+			bandViewModel->Vibrate(300);
+		}
+		else
+		{
+			bandViewModel->Vibrate(150);
+		}
+		break;
+	case Kinemic::Gesture::Gesture::SWIPE_L:
+		/* KINEMIC: Previous page on Swipe L */
+
+		pageNumber = wcstoul(PageNumberBox->Text->Data(), nullptr, 10);
+		if (pdfDocument != nullptr && (pageNumber - 1 >= 1) && (pageNumber - 1 <= pdfDocument->PageCount))
+		{
+			PageNumberBox->Text = "" + (pageNumber - 1).ToString();
+			ViewPage();
+			bandViewModel->Vibrate(300);
+		}
+		else
+		{
+			bandViewModel->Vibrate(150);
+		}
+		break;
+	case Kinemic::Gesture::Gesture::SWIPE_UP:
+		break;
+	case Kinemic::Gesture::Gesture::SWIPE_DOWN:
+		break;
+	case Kinemic::Gesture::Gesture::CHECK_MARK:
+		break;
+	case Kinemic::Gesture::Gesture::CROSS_MARK:
+		break;
+	case Kinemic::Gesture::Gesture::EARTOUCH_R:
+		break;
+	case Kinemic::Gesture::Gesture::EARTOUCH_L:
+		break;
+	}
 }
 
 void Scenario1_Render::LoadDocument()

@@ -8,8 +8,8 @@
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.18362.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.17134.0</WindowsTargetPlatformMinVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -209,7 +209,23 @@
       <Link>Assets\windows-sdk.png</Link>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\Kinemic.Gesture.UWP.Native.X64.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.UWP.Native.X64.Release.targets" Condition="Exists('packages\Kinemic.Gesture.UWP.Native.X64.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.UWP.Native.X64.Release.targets')" />
+    <Import Project="packages\Kinemic.Gesture.Common.UWP.Native.X64.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.Common.UWP.Native.X64.Release.targets" Condition="Exists('packages\Kinemic.Gesture.Common.UWP.Native.X64.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.Common.UWP.Native.X64.Release.targets')" />
+    <Import Project="packages\Kinemic.Gesture.UWP.Native.X86.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.UWP.Native.X86.Release.targets" Condition="Exists('packages\Kinemic.Gesture.UWP.Native.X86.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.UWP.Native.X86.Release.targets')" />
+    <Import Project="packages\Kinemic.Gesture.Common.UWP.Native.X86.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.Common.UWP.Native.X86.Release.targets" Condition="Exists('packages\Kinemic.Gesture.Common.UWP.Native.X86.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.Common.UWP.Native.X86.Release.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Kinemic.Gesture.UWP.Native.X64.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.UWP.Native.X64.Release.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Kinemic.Gesture.UWP.Native.X64.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.UWP.Native.X64.Release.targets'))" />
+    <Error Condition="!Exists('packages\Kinemic.Gesture.Common.UWP.Native.X64.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.Common.UWP.Native.X64.Release.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Kinemic.Gesture.Common.UWP.Native.X64.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.Common.UWP.Native.X64.Release.targets'))" />
+    <Error Condition="!Exists('packages\Kinemic.Gesture.UWP.Native.X86.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.UWP.Native.X86.Release.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Kinemic.Gesture.UWP.Native.X86.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.UWP.Native.X86.Release.targets'))" />
+    <Error Condition="!Exists('packages\Kinemic.Gesture.Common.UWP.Native.X86.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.Common.UWP.Native.X86.Release.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Kinemic.Gesture.Common.UWP.Native.X86.Release.1.1.0-dev.1-35-g104b48fc\build\native\Kinemic.Gesture.Common.UWP.Native.X86.Release.targets'))" />
+  </Target>
 </Project>
