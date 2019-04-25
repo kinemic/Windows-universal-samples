@@ -22,11 +22,11 @@ For visual studio to automatically install the Kinemic Gesture SDK NuGet package
 To configure the NuGet CLI to work with Artifactory, you need to add this repository to the list of sources.
 To add this repository, use the following command:
 
-```nuget sources Add -Name Artifactory -Source https://kinemic.jfrog.io/kinemic/api/nuget/nuget-develop -username <USERNAME> -password <PASSWORD>```
+```nuget sources Add -Name Kinemic_Develop -Source https://kinemic.jfrog.io/kinemic/api/nuget/nuget-develop -username <USERNAME> -password <PASSWORD>```
 
 Then, to authenticate against Artifactory with the NuGet API key, run the following command:
 
-```nuget setapikey <USERNAME>:<PASSWORD> -Source Artifactory```
+```nuget setapikey <USERNAME>:<PASSWORD> -Source Kinemic_Develop```
 
 ### Visual Studio Configuration
 
