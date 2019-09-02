@@ -14,29 +14,9 @@ These code samples were adapted from [Microsoft/Windows-universal-samples](https
 
 ## SDK Access
 
-These code samples require the Kinemic Gesture SDK which is available through NuGet, after you purchased a Kinemic Band.
-For visual studio to automatically install the Kinemic Gesture SDK NuGet package, you have to add our NuGet repository to your NuGet sources, this can be done for the NuGet CLI or in Visual Studio
+We provide access to our UWP SDK using an Artifactory NuGet repository. To add the SDK to your project, you have to add our NuGet repository to your NuGet sources and install our NuGet package.
 
-### NuGet CLI Configuration
-
-To configure the NuGet CLI to work with Artifactory, you need to add this repository to the list of sources.
-To add this repository, use the following command:
-
-```nuget sources Add -Name Kinemic_Develop -Source https://kinemic.jfrog.io/kinemic/api/nuget/nuget-develop -username <USERNAME> -password <PASSWORD>```
-
-Then, to authenticate against Artifactory with the NuGet API key, run the following command:
-
-```nuget setapikey <USERNAME>:<PASSWORD> -Source Kinemic_Develop```
-
-### Visual Studio Configuration
-
-To configure the NuGet Visual Studio Extension to use Artifactory, you need to add this repository as another Package Source under NuGet Package Manager.
-
-1. Go to the "Package Manager Settings" in your Visual Studio (Tools > NuGet Package Manager > Package Manager Settings > Package Sources) and add another Package Source.
-2. Name: Add a name for the package source (e.g. Artifactory NuGet repository)
-3. Paste the snippet below in the URL field
-
-```https://kinemic.jfrog.io/kinemic/api/nuget/nuget-develop```
+You can find the instructions to do this [here](https://kinemic.com/en/developerarea/installation/).
 
 ## Universal Windows Platform development
 
